@@ -67,7 +67,38 @@ body{
       color: #c00;
       background-color: #fff; 
 	}
+
+select[name=init_cat]{
+    width: 200px;
+    margin-left: 30px;
+    margin-right: 30px;
+    }
+
+select[name=other_cat]{
+    width: 200px;
+    margin-left: 30px;
+    }
 </style>
+<script language="Javascript">
+function SelectMoveRows(_from,_to)
+{
+    var SelID='';
+    var SelText='';
+    // Move rows from SS1 to SS2 from bottom to top
+    for (i=_from.options.length - 1; i>=0; i--)
+    {
+        if (_from.options[i].selected == true)
+        {
+            SelID=_from.options[i].value;
+            SelText=_from.options[i].text;
+            var newRow = new Option(SelText,SelID);
+            _to.options[_to.length]=newRow;
+            newRow.selected=true;
+            _from.options[i]=null;
+        }
+    }
+}
+</script>
 
 </head>
 <body>
@@ -83,13 +114,3 @@ ADMIN INTERFACE!!!
 </ul>
 </div>
 <div class="content">
-
-
-
-
-
-
-
-
-
-

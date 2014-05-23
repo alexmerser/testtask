@@ -15,7 +15,7 @@ sys.path.append(os.path.dirname(__file__))
 sys.path.append(os.path.dirname(__file__) + '/backend')
 
 import backend.views
-from views.urls import URL_MAP
+from backend.urls import URL_MAP
 
 
 def application(environ, start_response):
@@ -23,26 +23,24 @@ def application(environ, start_response):
     request_url = environ['REQUEST_URI']
     request_method = environ['REQUEST_METHOD']
     response_body = "RESPONSE"
+    if "?" in request_url:
+        request_url = request_url.split('?')[0]+"?"
     for item in URL_MAP:
         if item[0] == request_url and item[2] == request_method:
-            print request_url
-            print request_method
             method = getattr(backend.views, item[1])
-            print
-            method
-            request_body = environ['wsgi.input'].read(int(environ.get('CONTENT_LENGTH', 0)))
-            inp = parse_qs(request_body)
-            response_body = method(inp=inp)
+            if "?" in request_url:
+                query_string = parse_qs(environ['QUERY_STRING'])
+            else:
+                request_body = environ['wsgi.input'].read(int(environ.get('CONTENT_LENGTH', 0)))
+                print "REQUEST BODY %s" % request_body
+                query_string = parse_qs(request_body)
+            response_body = method(query_string=query_string)
             status = "200 OK"
             break
         else:
             response_body = "ERROR"
             status = "404 NOT FOUND"
 
-
-    #response_body = ['%s: %s' % (key, value)
-    #                for key, value in sorted(environ.items())]
-    #response_body = '\n'.join(response_body)
     response_headers = [('Content-Type', 'text/html'),
                         ('Content-Length', str(len(response_body))),
                         ('Status', status)]

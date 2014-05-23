@@ -19,5 +19,18 @@ def sql_search_query(query_string, cat_array):
     JOIN product ON product_id = product.id \
     JOIN category ON category_id = category.id \
     WHERE category.name IN (' + str(cat_array).strip('[]') + ')AND product.name="' + query_string + '"'
+    return query
+
+
+def sql_categories_for_product(product_name):
+    query = "SELECT DISTINCT category.name FROM category_producs " \
+            "JOIN product ON product_id = product.id " \
+            "JOIN category ON category_id = category.id " \
+            "WHERE product.name=\"{0}\"".format(product_name)
+    return query
+
+
+def sql_rest_of_cats(cat_array):
+    query = 'SELECT category.name FROM category WHERE category.name NOT IN ({0})'.format(str(cat_array).strip('[]').replace(" ", ""))
     print query
     return query
