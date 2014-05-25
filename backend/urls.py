@@ -8,6 +8,8 @@ URL_MAP = [('/', 'index', 'GET'),
            ('/admin/add_product', 'add_product', 'GET'),
            ('/admin/add_product', 'save_product', 'POST'),
            ('/admin/view_product?', 'view_products_cat', 'GET'),
-           ('/admin/add_categories_to_product', 'add_categories_to_product', 'POST')]
+           ('/admin/add_categories_to_product', 'add_categories_to_product', 'POST'),
+           ('/admin/view_category?', 'view_products_for_category', 'GET'),
+           ('/admin/add_product_to_category', 'add_product_to_category', 'POST')]
 
 
