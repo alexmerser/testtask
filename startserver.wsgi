@@ -32,7 +32,6 @@ def application(environ, start_response):
                 query_string = parse_qs(environ['QUERY_STRING'])
             else:
                 request_body = environ['wsgi.input'].read(int(environ.get('CONTENT_LENGTH', 0)))
-                print "REQUEST BODY %s" % request_body
                 query_string = parse_qs(request_body)
             response_body = method(query_string=query_string)
             status = "200 OK"

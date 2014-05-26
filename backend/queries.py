@@ -29,7 +29,6 @@ def sql_search_query(query_string, cat_array):
                 "JOIN product ON product_id = product.id " \
                 "JOIN category ON category_id = category.id " \
                 "WHERE category.name IN ({0}) AND product.name LIKE '%{1}%'".format(ext_list, query_string)
-        print query
     return query
 
 
@@ -69,7 +68,6 @@ def sql_products_for_category(cat_id):
             "JOIN product ON product_id = product.id " \
             "JOIN category ON category_id = category.id " \
             "WHERE category_id={0}".format(cat_id)
-    print query
     return query
 
 
@@ -79,7 +77,6 @@ def sql_rest_of_prods(prod_array):
     else:
         query = 'SELECT product.name FROM product WHERE product.name NOT IN ({0})'.format(
             str(prod_array).strip('[]').replace(" ", ""))
-    print query
     return query
 
 
@@ -88,7 +85,6 @@ def sql_add_product_to_category(category_id, prod_list):
     query = "REPLACE INTO category_producs (product_id, category_id) SELECT product.id, category.id FROM " \
             "product JOIN category WHERE category.id={0} " \
             "AND product.name IN ({1});".format(category_id, ext_list)
-    print query
     return query
 
 
