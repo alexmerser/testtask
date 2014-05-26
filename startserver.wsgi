@@ -38,7 +38,7 @@ def application(environ, start_response):
             status = "200 OK"
             break
         else:
-            response_body = "ERROR"
+            response_body = "404 URL NOT FOUND"
             status = "404 NOT FOUND"
 
     response_headers = [('Content-Type', 'text/html'),

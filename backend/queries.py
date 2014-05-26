@@ -5,12 +5,12 @@ select_all_products = 'SELECT * FROM product'
 
 
 def insert_category(cat_name):
-    query = 'INSERT INTO category ( name ) VALUES ( "' + cat_name + '" );'
+    query = "INSERT INTO category ( name ) VALUES ( \"{0}\" );".format(cat_name)
     return query
 
 
 def insert_product(prod_name, prod_price, cat_name):
-    query = 'CALL new_product_with_cat("%s", %s, "%s");' % (prod_name, prod_price, cat_name)
+    query = "CALL new_product_with_cat(\"{0}\", {1}, \"{2}\");".format(prod_name, prod_price, cat_name)
     return str(query)
 
 
