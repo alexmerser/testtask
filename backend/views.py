@@ -63,8 +63,6 @@ def search(*args, **kwargs):
     if result == ():
         empty_result_message = "God hate us all!!!!!!!!!"
         template = index(message=empty_result_message)
-        #search_error = "Write your query and choose at least one category !(or we don't have stuff that you search for)"
-        #template = index(message=search_error)
 
     return template
 
@@ -102,7 +100,7 @@ def save_category(*args, **kwargs):
     try:
         cursor.execute(insert_category(str(cat[0])))
         db.commit()
-    except:
+    except db.Error:
         db.rollback()
 
     cursor.close()
@@ -151,9 +149,12 @@ def add_product(*args, **kwargs):
 
 
 def save_product(*args, **kwargs):
-    prod_name = kwargs['query_string'].get('product_name')[0]
-    prod_price = kwargs['query_string'].get('product_price')[0]
-    init_cat = kwargs['query_string'].get('init_cat')[0]
+    try:
+        prod_name = kwargs['query_string'].get('product_name')[0]
+        prod_price = kwargs['query_string'].get('product_price')[0]
+        init_cat = kwargs['query_string'].get('init_cat')[0]
+    except TypeError:
+        return load_template('admin_header') + "Please enter a valid name and price." + load_template('footer')
 
     db = create_connection()
     cursor = db.cursor()
