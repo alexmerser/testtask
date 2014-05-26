@@ -204,7 +204,7 @@ def view_products_cat(*args, **kwargs):
 
     form = "<form name=\"add_prod\" action=\"/admin/add_categories_to_product\" method=\"POST\">" \
            "<table style=\"width: 100%\" cellpadding=\"3\" cellspacing=\"0\"><tr><td style=\"width:33%\">" \
-           "Categories<select multiple size=\"8\" name=\"init_cat\">{0}</select> </td>" \
+           "Categories <select multiple size=\"8\" name=\"init_cat\">{0}</select> </td>" \
            "<td align=\"center\" style=\"width:33%\"><input type=\"Button\" value=\">>\" onClick=\"SelectMoveRows(document.add_prod.init_cat, document.add_prod.other_cat)\"><br>" \
            "<input type=\"Button\" value=\"<<\" onClick=\"SelectMoveRows(document.add_prod.other_cat, document.add_prod.init_cat)\"></td>" \
            "<td style=\"width:33%\">Other categories <select  size=\"8\" multiple name=\"other_cat\">{1}</select></td></tr></table>" \
@@ -220,8 +220,11 @@ def add_categories_to_product(*args, **kwargs):
     product_name = kwargs['query_string'].get('prod_name')
     db = create_connection()
     cursor = db.cursor()
-    cursor.execute(sql_assign_product_to_category(product_name, cat_list))
-    db.commit()
+    try:
+        cursor.execute(sql_assign_product_to_category(product_name, cat_list))
+        db.commit()
+    except db.OperationalError:
+        return load_template('admin_header') + "Product must have at least one category! " + load_template('footer')
     cursor.close()
     cursor = db.cursor()
     cursor.execute(sql_del_category_from_product(product_name, cat_list))
