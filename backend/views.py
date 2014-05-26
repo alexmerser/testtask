@@ -102,6 +102,8 @@ def save_category(*args, **kwargs):
         db.commit()
     except db.Error:
         db.rollback()
+    except TypeError:
+        return load_template('admin_header') + "Enter a vaild name." + load_template('footer')
 
     cursor.close()
     db.close()
